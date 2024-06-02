@@ -14,6 +14,12 @@ export default function TodoItem({ id, text, complited }) {
                 onChange={() => dispatch(switchTodoComplete({ id }))}
             />
 
+            <span className="todo">{text}</span>
+
+            <button
+                className="checkbox"
+
+
             <span
                 // style={{ color: "red" }}
                 className="todo"

@@ -1,3 +1,12 @@
 .todo {
-    background-color: blue;
+    background-color: red;
+    margin-left: 10px;
 }
+
+.checkbox {
+    margin-left: 10px !important;
+}
+
+    
+}
+

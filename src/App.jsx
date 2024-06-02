@@ -13,6 +13,7 @@ function App() {
   // todo
   const [text, setText] = useState('');
 
+  // ф-ция для добавления тасок
   const addTask = () => {
     dispatch(addTodo({ text }));
     setText('');

@@ -1,0 +1,154 @@
+////////////////// Client:
+1.Разворачиваем клиетский реакт 
+(создает все необходимое окружение для реакта в папке client ,но сперва создаем пустые папки client и server )
+- npx create-react-app client
+
+2.Переходим в папку client
+- cd client/
+- npm start
+
+3.Выходим в корень
+- cd ../
+4.Инициализируем проект
+- git init
+5.Переходим в папку client
+- cd client/
+.Ставим eslint
+- npx eslint --init 
+6.Устанавливаем React
+- npm i express react react-dom react-router-dom
+7.Устанавливаем redux / toolkit
+- npm install @reduxjs/toolkit react-redux
+
+////////////////// Server:
+1.Переходим в папку Server
+2.Инициализируем проект
+- npm init -y
+3.Ставим eslint
+- npx eslint --init 
+4. Устанавливаем пакеты: express,sequelize,dotenv,morgan,cors
+- npm i express sequelize sequelize-cli pg pg-hstore dotenv morgan cors
+5. Создаем файл .sequelizerc в server
+(Инициализируем sequelize)
+- npx sequelize-cli init 
+6.Создаем таблицу:
+- npx sequelize model:generate --name User --attributes name:string,email:string,password:text
+- npx sequelize model:generate --name Todo --attributes text:text,status:boolean,user_id:integer
+7. Накатываем миграцию:
+- npx sequelize db:migrate
+8. Устанавливаем:
+ - npm i session-file-store
+ - npm i express-session
+ - npm i bcrypt
+ - npm i axios
+ 9.Устанавливаем Sagi
+ - npm install redux-saga
+
+///////////////// Установка Reactstrap:
+(устанавливаем в клиента)
+- npm install reactstrap react react-dom
+- npm install --save bootstrap
+
+(вставляем в index.js)
+- import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+/////////////////////////// Установка Redux:
+
+1. В (src) создаем папку (redux) => store.js => вставляем код 
+в нем мы будем перечеслять название слайсов и редусеров ,которые под них сделаны
+- import { configureStore } from '@reduxjs/toolkit';
+
+const store = configureStore({
+  reducer: {
+
+  },
+});
+
+2.В index.js оборачиваем App в Provider store
+
+- import { Provider } from 'react-redux';
+import App from './App';
+import store from './redux/store';
+
+axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.withCredentials = true;
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>,
+
+);
+
+export default store;
+
+3.В (redux) создаем папку (redusers) => userReduser.js
+
+- в store.js подключаем reducer: user - это слайс,userReducer - это сам reducer
+ const store = configureStore({
+  reducer: {
+    user: userReducer,
+  },
+
+4.В (redux) создаем файл type.js => 
+export const SET_USER = 'SET_USER'; 
+export const LOGOUT = 'LOGOUT';
+export const SET_EMPTY_USER = 'SET_EMPTY_USER';
+- а потом вызываем их в userReducer ,только не в виде строк а как переменные ,
+так меньше вероятность ошибиться
+
+5.В (redux) создаем папку (actions) => userActions.js =>
+- export const setAuthUser = (payload) => ({ type: SET_USER, payload });
+- export const setUser = (payload) => ({ type: SET_USER, payload });
+- это простая колбек ф-ции ,которая возвращает объект с ключом type ,где в payload может что то приходить 
+
+или может быть большая ф-ция
+
+- export const signupUser = (e, inputs) => (dispatch) => {
+  e.preventDefault();
+  axios.post('/api/user/signup', inputs)
+    .then((res) => dispatch(setAuthUser(res.data)))
+    .catch(console.log);
+};
+ и потом мы можем импортироваеть эти ф-ции в компонент signup ,а там вкладываем их в dispatch кнопки на onClick={}
+ - <Form onSubmit={(e) => dispatch(signupUser(e, Object.fromEntries(new FormData(e.target))))}>
+
+6.В компоненте signup / login используют хук - const dispatch = useDispatch();
+- вешаем его на onClick(),вкладываем в него action => дойдет до reducer
+- <Form onSubmit={(e) => dispatch(signupUser(e, Object.fromEntries(new FormData(e.target))))}>
+
+//////////////////////////////////////////
+Посмотреть все файлы в папке: ls -a
+Удалить git: rm -rf .git
+
+/////////////////// Eslint:
+ 'react/prop-types': 0,
+    'react/jsx-filename-extension': 0,
+    'no-restricted-exports': 0,
+    'react/jsx-props-no-spreading': 0,
+    'no-unused-vars': 0,
+    'no-console': 0,
+    'react/jsx-no-constructed-context-values': 0,
+    'default-param-last': 0,
+
+
+
+
+
+//////////////////// INFO:
+1. memo(PostItem) - это функция ,которая берет аргументом компонент и возвращает,
+тоже компонент (возвращает мемонизированное состояние компонента),чтобы он 
+ обновлялся только один раз ,а не столько сколько в него передано пропсов.
+ memo - чаще всего используют вместе с useCallback( )
+
+2. useCallback() - позволяет запомнить состояние функции, если функция не менялась
+оставляет ее такой же ,не перерендерит ее снова.
+
+3. useMemo() - ХУК ,мемонизирует только значение операции,не мемонизирует ф-цию,если 
+массив зависимости не поменялся то вернет только то что реакт запомнил
+
+4. useContext() - как локальные переменные,может передавать переменные и функции без пропсов

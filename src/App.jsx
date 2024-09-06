@@ -37,7 +37,7 @@ function App() {
 
             <div>
                 <div>
-                    <h3>2 - Input commit second</h3>
+                    <h3>1 - Input commit first</h3>
                 </div>
                 <input value={text} onChange={(e) => setText(e.target.value)} />
                 <button onClick={addTask} type="button">

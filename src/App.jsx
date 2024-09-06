@@ -22,7 +22,7 @@ function App() {
 
     return (
         <>
-            <div>{count}, вместо  hello world написал полную фигню</div>
+            <div>{count}, hello world</div>
             <div className="btnBlock">
                 <button type="button" onClick={() => dispatch(increment())}>
                     +1
